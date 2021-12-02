@@ -1,10 +1,9 @@
 file(GLOB GDEFLATE_CPU_SOURCES *gdeflate_cpu*.cpp *gdeflate_cpu*.cu)
 
 # Add gdeflate CPU executables 
-find_package(ZLIB)
 # gdeflate CPU examples require gdeflate and zlib libraries
 # skip gdeflate CPU examples if required libraries are missing
-if (GDEFLATE_FOUND AND ZLIB_FOUND)
+if (gdeflate_FOUND AND ZLIB_FOUND)
   foreach(EXAMPLE_SOURCE ${GDEFLATE_CPU_SOURCES})
     # cut off suffixes
     string(REPLACE ".cpp" "" EXAMPLE_NAME ${EXAMPLE_SOURCE})
@@ -13,11 +12,11 @@ if (GDEFLATE_FOUND AND ZLIB_FOUND)
     add_executable(${BARE_NAME} ${EXAMPLE_SOURCE})
     target_link_libraries(${BARE_NAME} PRIVATE nvcomp CUDA::cudart)
     target_include_directories(${BARE_NAME} PRIVATE ${GDEFLATE_INCLUDE_DIRS})
-    target_link_libraries(${BARE_NAME} PRIVATE ${GDEFLATE_LIBRARIES})
-    target_link_libraries(${BARE_NAME} PRIVATE ZLIB::ZLIB)
+    target_link_libraries(${BARE_NAME} PRIVATE gdeflate)
+    target_link_libraries(${BARE_NAME} PRIVATE gdeflate_cpu ZLIB::ZLIB)
   endforeach(EXAMPLE_SOURCE ${GDEFLATE_CPU_SOURCES})
 else()
-  message(WARNING "Cannot build gdeflate CPU example without gdeflate and zlib libraries.")
+  message(WARNING "Skipping building gdeflate CPU example, as gdeflate and/or zlib libraries are not found.")
 endif()
 
 option (BUILD_GDS_EXAMPLE "Build NVCOMP + GDS example" OFF)
@@ -42,3 +41,7 @@ if (LZ4_INCLUDE_DIR AND LZ4_LIBRARY)
 else()
   message(WARNING "Skipping building LZ4 CPU example, as no LZ4 library was found.")
 endif()
+
+# Add quickstart example
+add_executable(low_level_quickstart_example low_level_quickstart_example.cpp)
+target_link_libraries(low_level_quickstart_example PRIVATE CUDA::cudart nvcomp)

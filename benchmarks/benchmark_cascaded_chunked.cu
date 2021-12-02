@@ -26,17 +26,19 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifdef ENABLE_GDEFLATE
-#include "nvcomp/gdeflate.h"
-#include "test_batch_c_api.h"
+#include "benchmark_template_chunked.cuh"
+#include "nvcomp/cascaded.h"
 
-#define SUPPORT_NULLPTR_APIS
+// Template benchmark uses a fixed format Opts, so just defaulting to INT for
+// now.
+// TODO: Update benchmark to accept type as a command-line parameter
+static const nvcompBatchedCascadedOpts_t nvcompBatchedCascadedTestOpts
+    = {4096, NVCOMP_TYPE_UINT, 2, 1, 1};
 
-GENERATE_TESTS(Gdeflate);
-#else
-int main(int argc, char** argv) {
-  (void)argc;
-  (void)argv;
-  return 0;
-}
-#endif
+GENERATE_CHUNKED_BENCHMARK(
+    nvcompBatchedCascadedCompressGetTempSize,
+    nvcompBatchedCascadedCompressGetMaxOutputChunkSize,
+    nvcompBatchedCascadedCompressAsync,
+    nvcompBatchedCascadedDecompressGetTempSize,
+    nvcompBatchedCascadedDecompressAsync,
+    nvcompBatchedCascadedTestOpts);

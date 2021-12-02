@@ -26,17 +26,26 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifdef ENABLE_GDEFLATE
-#include "nvcomp/gdeflate.h"
-#include "test_batch_c_api.h"
+#ifdef ENABLE_BITCOMP
+#include "benchmark_template_chunked.cuh"
+#include "nvcomp/bitcomp.h"
 
-#define SUPPORT_NULLPTR_APIS
+GENERATE_CHUNKED_BENCHMARK(
+    nvcompBatchedBitcompCompressGetTempSize,
+    nvcompBatchedBitcompCompressGetMaxOutputChunkSize,
+    nvcompBatchedBitcompCompressAsync,
+    nvcompBatchedBitcompDecompressGetTempSize,
+    nvcompBatchedBitcompDecompressAsync,
+    nvcompBatchedBitcompDefaultOpts);
 
-GENERATE_TESTS(Gdeflate);
 #else
-int main(int argc, char** argv) {
-  (void)argc;
-  (void)argv;
-  return 0;
+
+#include <iostream>
+int main(int, char**)
+{
+  std::cerr << "Bitcomp not installed" << std::endl;
+  return 10; // error
 }
+
+
 #endif

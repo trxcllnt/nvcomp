@@ -36,11 +36,13 @@
 
 // Define cub inside of the nvcomp namespace, so as to avoid any conflicts with
 // different versions of cub at link time with other libraries.
+#define CUB_NS_QUALIFIER ::nvcomp::cub
 #define CUB_NS_PREFIX namespace nvcomp {
 #define CUB_NS_POSTFIX }
 #include <cub/cub.cuh>
 #undef CUB_NS_PREFIX
 #undef CUB_NS_POSTFIX
+#undef CUB_NS_QUALIFIER
 
 #ifdef __GNUC__
 #pragma GCC diagnostic pop

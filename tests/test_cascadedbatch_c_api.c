@@ -26,17 +26,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifdef ENABLE_GDEFLATE
-#include "nvcomp/gdeflate.h"
+#include "nvcomp/cascaded.h"
 #include "test_batch_c_api.h"
 
-#define SUPPORT_NULLPTR_APIS
-
-GENERATE_TESTS(Gdeflate);
-#else
-int main(int argc, char** argv) {
-  (void)argc;
-  (void)argv;
-  return 0;
-}
-#endif
+GENERATE_TESTS(Cascaded);

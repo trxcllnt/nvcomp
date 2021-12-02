@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, NVIDIA CORPORATION. All rights reserved.
+ * Copyright (c) 2017-2021, NVIDIA CORPORATION. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -26,17 +26,25 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#ifndef NVCOMP_GDEFLATE_KERNELS_H
+#define NVCOMP_GDEFLATE_KERNELS_H
+
+#include "nvcomp.h"
+#include "nvcomp.hpp"
+
+#include <cuda.h>
+
 #ifdef ENABLE_GDEFLATE
-#include "nvcomp/gdeflate.h"
-#include "test_batch_c_api.h"
+#include "gdeflate.h"
 
-#define SUPPORT_NULLPTR_APIS
-
-GENERATE_TESTS(Gdeflate);
-#else
-int main(int argc, char** argv) {
-  (void)argc;
-  (void)argv;
-  return 0;
+namespace nvcomp
+{
+  void convertGdeflateOutputStatuses(
+      nvcompStatus_t *statuses,
+      size_t batch_size,
+      cudaStream_t stream);
 }
-#endif
+
+#endif // ENABLE_GDEFLATE
+#endif // NVCOMP_GDEFLATE_KERNELS_H
+

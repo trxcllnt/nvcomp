@@ -63,10 +63,7 @@ void check_format_opts(const nvcompLZ4FormatOpts* const format_opts)
 {
   CHECK_NOT_NULL(format_opts);
 
-  if (format_opts->chunk_size < lz4MinChunkSize()) {
-    throw std::runtime_error(
-        "LZ4 minimum chunk size is " + std::to_string(lz4MinChunkSize()));
-  } else if (format_opts->chunk_size > lz4MaxChunkSize()) {
+  if (format_opts->chunk_size > lz4MaxChunkSize()) {
     throw std::runtime_error(
         "LZ4 maximum chunk size is " + std::to_string(lz4MaxChunkSize()));
   }
@@ -84,13 +81,13 @@ size_t get_chunk_size_or_default(const nvcompLZ4FormatOpts* const format_opts)
 
 } // namespace
 
-int LZ4IsMetadata(const void* const metadata_ptr)
+int nvcompLZ4IsMetadata(const void* const metadata_ptr)
 {
   const Metadata* const metadata = static_cast<const Metadata*>(metadata_ptr);
   return metadata->getCompressionType() == LZ4Metadata::COMPRESSION_ID;
 }
 
-int LZ4IsData(const void* const in_ptr, size_t in_bytes, cudaStream_t stream)
+int nvcompLZ4IsData(const void* const in_ptr, size_t in_bytes, cudaStream_t stream)
 {
   // Need at least 2 size_t variables to be valid.
   if (in_ptr == NULL || in_bytes < sizeof(size_t)) {

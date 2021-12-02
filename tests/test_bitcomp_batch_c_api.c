@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, NVIDIA CORPORATION. All rights reserved.
+ * Copyright (c) 2021, NVIDIA CORPORATION. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -26,17 +26,18 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifdef ENABLE_GDEFLATE
-#include "nvcomp/gdeflate.h"
+#ifdef ENABLE_BITCOMP
+
+#include "nvcomp/bitcomp.h"
 #include "test_batch_c_api.h"
 
-#define SUPPORT_NULLPTR_APIS
+GENERATE_TESTS(Bitcomp);
 
-GENERATE_TESTS(Gdeflate);
 #else
-int main(int argc, char** argv) {
-  (void)argc;
-  (void)argv;
-  return 0;
+#include <stdio.h>
+int main()
+{
+    printf ("Bitcomp not enabled, skipping tests\n");
+    return 0;
 }
 #endif
