@@ -6,6 +6,7 @@ set(CMAKE_CUDA_STANDARD 11)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+option(BUILD_EXAMPLES "Build examples." ON)
 option(BUILD_BENCHMARKS "Build benchmarks." OFF)
 
 include(GNUInstallDirs)
@@ -107,9 +108,10 @@ if (UNIX)
   include(GNUInstallDirs)
 endif()
 
+if(BUILD_EXAMPLES)
+  add_subdirectory(examples)
+endif()
 
-add_subdirectory(examples)
-
-if (DEFINED BUILD_BENCHMARKS) 
+if (BUILD_BENCHMARKS) 
   add_subdirectory(benchmarks)
 endif()
